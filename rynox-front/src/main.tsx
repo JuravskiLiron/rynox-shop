@@ -2,11 +2,18 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import "./styles/App.css"; // подключи стили (временный фон и базовые классы)
+import { CartProvider } from "./app/CartContext";
+import { UIProvider } from "./app/UIContext";
+import "./styles/shop.css";
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <UIProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </UIProvider>
     </BrowserRouter>
   </React.StrictMode>
 );

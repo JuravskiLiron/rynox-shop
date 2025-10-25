@@ -1,5 +1,5 @@
 // src/components/Footer.tsx
-import "../styles/App.css"; // подключи стили (временный фон и базовые классы)
+import "../styles/shop.css"; // подключи стили (временный фон и базовые классы)
 export function Footer() {
     return (
       <footer className="lux-footer">

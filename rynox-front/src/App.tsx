@@ -1,23 +1,25 @@
-// src/App.tsx
 import { Routes, Route } from "react-router-dom";
-import RootLayout from "./layouts/RootLayout";
-import StoreHome from "./pages/StoreHome";
-import Accessories from "./pages/Accessories";
-import Support from "./pages/Support";
+import Home from "./pages/Home";
+import Catalog from "./pages/Catalog";
 import Product from "./pages/Product";
-import NotFound from "./pages/NotFound";
-import "./styles/App.css"; // подключи стили (временный фон и базовые классы)
+import Support from "./pages/Support";
+import { Header } from "./components/Header";
+import MobileMenu from "./components/MobileMenu";
+import CartDrawer from "./components/CartDrawer";
 
-export default function App() {
+export default function App(){
   return (
-    <Routes>
-      <Route element={<RootLayout />}>
-        <Route index element={<StoreHome />} />
-        <Route path="accessories" element={<Accessories />} />
-        <Route path="support" element={<Support />} />
-        <Route path="product/:id" element={<Product />} />
-        <Route path="*" element={<NotFound />} />
-      </Route>
-    </Routes>
+    <>
+      <Header/>
+      <MobileMenu/>
+      <CartDrawer/>
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="/catalog" element={<Catalog/>}/>
+        <Route path="/product/:id" element={<Product/>}/>
+        <Route path="/support" element={<Support/>}/>
+      </Routes>
+      <footer className="ft"><div className="container">© 2025 LuxStore</div></footer>
+    </>
   );
 }

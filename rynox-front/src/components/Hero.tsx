@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
-import "../styles/App.css"; // подключи стили (временный фон и базовые классы)
+import "../styles/shop.css"; // подключи стили (временный фон и базовые классы)
 export function Hero() {
   return (
+    
     <section className="lux-hero">
       <div className="lux-hero__bg" aria-hidden />
       <div className="container lux-hero__inner">

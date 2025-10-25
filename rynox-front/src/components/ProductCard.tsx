@@ -1,57 +1,58 @@
+// src/components/ProductCard.tsx
 import { Link } from "react-router-dom";
-import "../styles/App.css"; // подключи стили (временный фон и базовые классы)
+import type React from "react";
+
 type Color = { name: string; hex: string };
 
-type Props = {
+type ProductCardProps = {
   id: number;
   name: string;
-  subtitle: string;
   price: number;
-  img: string;      // без расширения, как "/assets/pro-case"
+  img: string;         // базовый путь без расширения, напр. "/assets/pro-case"
   rating: number;
+  colors: Color[];
+  subtitle?: string;
   badge?: string;
-  colors: Color[];  // <-- ВАЖНО: массив ОБЪЕКТОВ
 };
+
+// Тип для style с кастомной CSS-переменной --dot
+type StyleWithDotVar = React.CSSProperties & { ["--dot"]?: string };
 
 export function ProductCard({
   id, name, subtitle, price, img, rating, badge, colors,
-}: Props) {
+}: ProductCardProps) {
   return (
-    <article className="pcard">
-      {badge && <span className="badge">{badge}</span>}
+    <article className="card">
+      {badge && <span className="card__badge">{badge}</span>}
 
-      <div className="pcard__media">
+      <div className="card__media">
         <picture>
           <source srcSet={`${img}.avif`} type="image/avif" />
           <source srcSet={`${img}.webp`} type="image/webp" />
-          <img src={`${img}.jpg`} alt={name} loading="lazy" decoding="async" />
+          <img src={`${img}.jpg`} alt={name} />
         </picture>
       </div>
 
-      <div className="pcard__body">
-        <h3 className="pcard__title">{name}</h3>
-        <p className="pcard__sub">{subtitle}</p>
+      <div className="card__body">
+        <h3 className="card__title">{name}</h3>
+        {subtitle && <p className="card__sub">{subtitle}</p>}
 
-        <div className="pcard__meta">
-          <div className="pcard__colors" aria-label="Available colors">
-            {colors.map(c => (
-              <span
-                key={c.hex}
-                className="dot"
-                title={c.name}
-                style={{ ["--dot" as any]: c.hex }}
-              />
-            ))}
+        <div className="card__meta">
+          <div className="card__colors" aria-label="Доступные цвета">
+            {colors.map((c) => {
+              const dotStyle: StyleWithDotVar = { "--dot": c.hex };
+              return <span key={c.hex} className="dot" title={c.name} style={dotStyle} />;
+            })}
           </div>
-
-          <div className="stars">★ ★ ★ ★ ★</div>
+          <div className="card__rating">⭐ {rating.toFixed(1)}</div>
         </div>
 
-        <div className="pcard__foot">
-          <div className="pcard__price">₪{price}</div>
-          <Link to={`/product/${id}`} className="btn btn--light">View</Link>
+        <div className="card__foot">
+          <div className="card__price">₪{price}</div>
+          <Link to={`/product/${id}`} className="btn btn--light">Подробнее</Link>
         </div>
       </div>
     </article>
   );
 }
+    
