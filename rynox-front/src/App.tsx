@@ -1,25 +1,20 @@
+// src/App.tsx
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Catalog from "./pages/Catalog";
-import Product from "./pages/Product";
-import Support from "./pages/Support";
-import { Header } from "./components/Header";
-import MobileMenu from "./components/MobileMenu";
-import CartDrawer from "./components/CartDrawer";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
-export default function App(){
+export default function App() {
   return (
     <>
-      <Header/>
-      <MobileMenu/>
-      <CartDrawer/>
+      <Header />
       <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/catalog" element={<Catalog/>}/>
-        <Route path="/product/:id" element={<Product/>}/>
-        <Route path="/support" element={<Support/>}/>
+        <Route path="/" element={<Home />} />
+        <Route path="/catalog" element={<div className="container sec">Каталог (заглушка)</div>} />
+        <Route path="/support" element={<div className="container sec">Поддержка (заглушка)</div>} />
+        <Route path="*" element={<div className="container sec">404</div>} />
       </Routes>
-      <footer className="ft"><div className="container">© 2025 LuxStore</div></footer>
+      <Footer />
     </>
   );
 }

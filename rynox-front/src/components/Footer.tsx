@@ -1,22 +1,15 @@
 // src/components/Footer.tsx
-import "../styles/shop.css"; // подключи стили (временный фон и базовые классы)
-export function Footer() {
-    return (
-      <footer className="lux-footer">
-        <div className="container lux-footer__grid">
-          <div>
-            <div className="lux-brand lux-brand--muted">
-              <span className="lux-logo">◦</span> Rynox
-            </div>
-            <p className="lux-copy">Designed with care. © 2025</p>
-          </div>
-          <nav className="lux-footnav">
-            <a className="lux-footnav__link" href="#">Shipping & Returns</a>
-            <a className="lux-footnav__link" href="#">Warranty</a>
-            <a className="lux-footnav__link" href="#">Privacy</a>
-            <a className="lux-footnav__link" href="#">Terms</a>
-          </nav>
-        </div>
-      </footer>
-    );
-  }
+export default function Footer(){
+  return (
+    <footer className="ft">
+      <div className="container" style={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
+        <nav style={{display:"flex", gap:12}}>
+          <a href="/about">О нас</a>
+          <a href="/privacy">Конфиденциальность</a>
+          <a href="/terms">Условия</a>
+        </nav>
+        <span>© {new Date().getFullYear()} Rynox</span>
+      </div>
+    </footer>
+  );
+}

@@ -179,3 +179,50 @@ body{margin:0; color:var(--ink); background:var(--bg); font-family:system-ui,-ap
 .cat img{position:absolute; inset:auto 8px 8px auto; width:120px; height:80px; object-fit:cover; border-radius:10px; opacity:.95}
 .cat span{font-weight:700}
 .cat:hover{box-shadow:0 8px 22px rgba(2,6,23,.08)}
+/* Каталожная карточка — tappable cover на мобилках */
+.card{position:relative}
+.card__overlay{
+  position:absolute; inset:0; z-index:2;
+}
+
+/* Упрощаем карточку на небольших экранах: показываем только картинку/цену */
+@media (max-width: 640px){
+  .card__body{display:none}                /* прячем текст/метаданные */
+  .card__media{aspect-ratio: 1/1}          /* квадрат — крупнее картинка */
+  .card__media img{width:90%}
+}
+/* Сетка карточек: 2 колонки на мобилке */
+@media (max-width: 640px){
+  .grid--3{grid-template-columns: repeat(2, minmax(0,1fr))}
+  .grid--4{grid-template-columns: repeat(2, minmax(0,1fr))}
+  .sec{padding:14px 0 20px}
+}
+/* Бургер-меню видно на мобилке, навигация скрыта */
+@media (max-width: 960px){
+  .hd__burger{display:block}
+  .hd__nav{display:none}
+  .hd__search input{width:180px}
+}
+
+/* Кнопки в шапке должны кликаться: не перекрываем промо/мега */
+.promo, .mega{position:relative; z-index: 10}
+.hd{position:sticky; top:0; z-index: 30}
+/* Mega menu закрыто по умолчанию */
+.mega__panel{display:none}
+.mega.open .mega__panel{display:grid}
+.mm, .cart{pointer-events:none}
+.mm.open, .cart.open{pointer-events:auto}
+@media (max-width: 640px){
+  .hero__inner{grid-template-columns:1fr; gap:12px; padding:14px 0}
+  .hero p{display:none}                  /* убираем подзаголовок на телефоне */
+  .hero__cta .btn--ghost{display:none}   /* оставляем одну главную кнопку */
+  .hero__img{max-width: 360px; margin: 0 auto}
+}
+@media (max-width: 640px){
+  .cat{min-height:100px; padding:12px}
+  .cat img{width:96px; height:72px}
+  .cat span{font-size: .95rem}
+}
+.clock{font-variant-numeric: tabular-nums; font-feature-settings:'tnum' 1}
+.clock b{display:inline-block; width:2ch; text-align:right}
+.promo__inner{min-height:44px} /* фикс высоты */

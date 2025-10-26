@@ -1,19 +1,17 @@
 import { Link, NavLink } from "react-router-dom";
-import { useUI } from "../app/UIContext";
 
-export default function MobileMenu() {
-  const { menuOpen, closeMenu } = useUI();
+export default function MobileMenu({open, onClose}:{open:boolean; onClose:()=>void}) {
   return (
-    <div className={`mm ${menuOpen ? "open":""}`} aria-hidden={!menuOpen}>
+    <div className={`mm ${open ? "open" : ""}`} aria-hidden={!open}>
       <div className="mm__panel">
-        <button className="mm__close" onClick={closeMenu} aria-label="Close">×</button>
-        <Link to="/" onClick={closeMenu} className="mm__brand">LuxStore</Link>
-        <NavLink to="/catalog?type=case" onClick={closeMenu}>Чехлы</NavLink>
-        <NavLink to="/catalog?type=glass" onClick={closeMenu}>Стекла</NavLink>
-        <NavLink to="/catalog?type=charger" onClick={closeMenu}>Зарядки</NavLink>
-        <NavLink to="/support" onClick={closeMenu}>Поддержка</NavLink>
+        <button className="mm__close" aria-label="Закрыть" onClick={onClose}>×</button>
+        <Link to="/" className="mm__brand" onClick={onClose}>Rynox</Link>
+        <NavLink to="/catalog?type=phone" onClick={onClose}>Смартфоны</NavLink>
+        <NavLink to="/catalog?type=laptop" onClick={onClose}>Ноутбуки</NavLink>
+        <NavLink to="/catalog?type=headphones" onClick={onClose}>Наушники</NavLink>
+        <NavLink to="/support" onClick={onClose}>Поддержка</NavLink>
       </div>
-      <div className="mm__backdrop" onClick={closeMenu}/>
+      <div className="mm__backdrop" onClick={onClose}/>
     </div>
   );
 }
