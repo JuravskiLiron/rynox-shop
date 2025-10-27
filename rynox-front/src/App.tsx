@@ -1,20 +1,23 @@
 // src/App.tsx
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Home from "./pages/Home";
+import Catalog from "./pages/Catalog";
+import Product from "./pages/Product";
 
-export default function App() {
+export default function App(){
   return (
     <>
-      <Header />
+      <Header/>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/catalog" element={<div className="container sec">Каталог (заглушка)</div>} />
-        <Route path="/support" element={<div className="container sec">Поддержка (заглушка)</div>} />
-        <Route path="*" element={<div className="container sec">404</div>} />
+        <Route path="/" element={<Home/>} />
+        <Route path="/catalog" element={<Catalog/>} />
+        <Route path="/product/:slug" element={<Product/>} />
+        <Route path="/support" element={<main className="container sec"><h2>Поддержка</h2><p>FAQ, доставка, возврат и т.п.</p></main>} />
+        <Route path="*" element={<main className="container sec"><div className="empty">Страница не найдена</div></main>} />
       </Routes>
-      <Footer />
+      <Footer/>
     </>
   );
 }

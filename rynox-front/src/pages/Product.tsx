@@ -1,36 +1,54 @@
+import { useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { byId } from "../data/products";
-import { useCart } from "../app/CartContext";
+import { PRODUCTS } from "../data/products";
 
 export default function Product(){
-  const { id } = useParams();
-  const p = byId(id||"");
-  const { add } = useCart();
-  if(!p) return <div className="container" style={{padding:"24px 0"}}><h2>Товар не найден</h2></div>;
+  const { slug } = useParams<{slug:string}>();
+  const item = useMemo(()=> PRODUCTS.find(p=> p.slug === slug), [slug]);
+
+  if(!item) return <main className="container sec"><div className="empty">Товар не найден.</div></main>;
 
   return (
-    <section className="container product">
+    <main className="container product">
       <div className="product__media">
-        <img src={`${p.imgBase}.jpg`} alt={p.name}/>
+        <picture>
+          <source srcSet={`${item.imgBase}.avif`} type="image/avif"/>
+          <source srcSet={`${item.imgBase}.webp`} type="image/webp"/>
+          <img src={`${item.imgBase}.jpg`} alt={item.name}/>
+        </picture>
       </div>
-      <div className="product__info">
-        <h1>{p.name}</h1>
-        <p className="muted">{p.subtitle}</p>
-        <div className="price">₪{p.price}</div>
+      <div>
+        <h1 style={{marginTop:0}}>{item.name}</h1>
+        {item.subtitle && <p className="muted">{item.subtitle}</p>}
+        <div className="price">₪{item.price}</div>
 
-        <div className="swatches">{p.colors.map(c => <span key={c.hex} className="dot" title={c.name} style={{["--dot" as any]: c.hex}}/>)}</div>
+        {item.colors?.length ? (
+          <>
+            <div className="muted">Цвета:</div>
+            <div className="swatches">
+              {item.colors.map(c=>(
+                <span key={c.hex} className="dot" title={c.name} style={{["--dot" as any]: c.hex} as any}/>
+              ))}
+            </div>
+          </>
+        ) : null}
 
-        <button className="btn btn--primary" onClick={()=>add({id:p.id, name:p.name, price:p.price, img:p.imgBase})}>
-          В корзину
-        </button>
+        {item.features?.length ? (
+          <>
+            <h3>Особенности</h3>
+            <ul>{item.features.map(f=> <li key={f}>{f}</li>)}</ul>
+          </>
+        ) : null}
 
-        <div className="details">
-          <h3>Особенности</h3>
-          <ul>{p.features?.map(f => <li key={f}>{f}</li>)}</ul>
-          <h3>Совместимость</h3>
-          <ul>{p.compatibility.map(f => <li key={f}>{f}</li>)}</ul>
-        </div>
+        {item.compatibility?.length ? (
+          <>
+            <h3>Совместимость</h3>
+            <p className="muted">{item.compatibility.join(" • ")}</p>
+          </>
+        ) : null}
+
+        <button className="btn btn--primary" style={{marginTop:12}}>Добавить в корзину</button>
       </div>
-    </section>
+    </main>
   );
 }

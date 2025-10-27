@@ -1,60 +1,57 @@
 import { Link } from "react-router-dom";
+import type React from "react";
 
 type Color = { name: string; hex: string };
-type Props = {
+
+type ProductCardProps = {
   id: number;
+  slug: string;
   name: string;
   price: number;
-  img: string;             // базовый путь без расширения ИЛИ полный src с расширением
+  img: string;      // базовый путь без расширения
+  rating: number;
+  colors: Color[];
   subtitle?: string;
-  rating?: number;
-  colors?: Color[];
   badge?: string;
 };
 
-const FALLBACK = "/assets/placeholder.png";
-
-function hasExt(path: string) {
-  return /\.[a-z0-9]+$/i.test(path);
-}
+type StyleWithDotVar = React.CSSProperties & { ["--dot"]?: string };
 
 export function ProductCard({
-  id, name, price, img, subtitle = "", rating = 0, colors = [], badge
-}: Props) {
-  const useExt = hasExt(img);
-
+  id, slug, name, subtitle, price, img, rating, badge, colors,
+}: ProductCardProps) {
   return (
-    <article className="card" style={{border:"1px solid #eee", borderRadius:12, overflow:"hidden"}}>
-      {badge && <span className="card__badge" style={{position:"absolute", margin:10, background:"#eef2ff", padding:"4px 8px", borderRadius:999}}>{badge}</span>}
-      <div className="card__media" style={{aspectRatio:"4/3", display:"grid", placeItems:"center", background:"#fafafa", borderBottom:"1px solid #eee"}}>
-        {useExt ? (
-          <img src={img} alt={name} style={{width:"80%", height:"auto"}} onError={(e)=>{const t=e.currentTarget; if (t.src.endsWith(FALLBACK)) return; t.onerror=null; t.src=FALLBACK;}} />
-        ) : (
-          <picture>
-            <source srcSet={`${img}.avif`} type="image/avif" />
-            <source srcSet={`${img}.webp`} type="image/webp" />
-            <img src={`${img}.png`} alt={name} style={{width:"80%", height:"auto"}} onError={(e)=>{const t=e.currentTarget; if (t.src.endsWith(FALLBACK)) return; (t as any).onerror=null; t.src=FALLBACK;}} />
-          </picture>
-        )}
+    <article className="card">
+      {/* Кликабельный слой — всегда поверх (мобайл/десктоп) */}
+      <Link className="card__overlay" to={`/product/${slug}`} aria-label={name} />
+
+      {badge && <span className="card__badge">{badge}</span>}
+
+      <div className="card__media">
+        <picture>
+          <source srcSet={`${img}.avif`} type="image/avif" />
+          <source srcSet={`${img}.webp`} type="image/webp" />
+          <img src={`${img}.jpg`} alt={name} />
+        </picture>
       </div>
-      <div className="card__body" style={{padding:12}}>
-        <h3 style={{margin:"6px 0"}}>{name}</h3>
-        {subtitle && <p style={{margin:"4px 0", color:"#556070"}}>{subtitle}</p>}
-        <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:8}}>
-          <div style={{display:"flex", gap:6}}>
-            {colors.map(c => (
-              <span key={`${c.name}-${c.hex}`} title={c.name} style={{width:14, height:14, borderRadius:999, border:"1px solid #d1d5db", background:c.hex}}/>
-            ))}
+
+      <div className="card__body">
+        <h3 className="card__title">{name}</h3>
+        {subtitle && <p className="card__sub">{subtitle}</p>}
+
+        <div className="card__meta">
+          <div className="card__colors" aria-label="Доступные цвета">
+            {colors.map((c) => {
+              const dotStyle: StyleWithDotVar = { "--dot": c.hex };
+              return <span key={c.hex} className="dot" title={c.name} style={dotStyle} />;
+            })}
           </div>
-          <div>⭐ {rating.toFixed(1)}</div>
+          <div className="card__rating">⭐ {rating.toFixed(1)}</div>
         </div>
-        <div style={{display:"flex", justifyContent:"space-between", alignItems:"center", marginTop:10}}>
-          <div style={{fontWeight:800}}>₪{price}</div>
-          
-          <Link to={`/product/${id}`} className="card__overlay" aria-label={`Открыть ${name}`} />
-            
 
-
+        <div className="card__foot">
+          <div className="card__price">₪{price}</div>
+          <Link to={`/product/${slug}`} className="btn btn--light">Подробнее</Link>
         </div>
       </div>
     </article>

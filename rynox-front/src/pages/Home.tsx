@@ -40,16 +40,19 @@ export default function Home() {
         <div className="grid grid--3">
           {newsToShow.map((p: any) => (
             <ProductCard
-              key={p?.id}
-              id={p?.id}
-              name={p?.name ?? "Товар"}
-              subtitle={p?.subtitle ?? ""}
-              price={p?.price ?? 0}
-              img={p?.imgBase ?? "/assets/placeholder"}
-              rating={p?.rating ?? 0}
-              colors={p?.colors ?? []}
-              badge={p?.isNew ? "Новинка" : undefined}
-            />
+  key={p.id}
+  id={p.id}
+  slug={p.slug}         // ← важно
+  name={p.name}
+  subtitle={p.subtitle || ""}
+  price={p.price}
+  img={p.imgBase}
+  rating={p.rating ?? 0}
+  colors={p.colors ?? []}
+  badge={p.isNew ? "Новинка" : undefined}
+/>
+
+
           ))}
         </div>
       </section>
@@ -63,16 +66,18 @@ export default function Home() {
         <div className="grid grid--3">
           {featured.map((p: any) => (
             <ProductCard
-              key={p?.id}
-              id={p?.id}
-              name={p?.name ?? "Товар"}
-              subtitle={p?.subtitle ?? ""}
-              price={p?.price ?? 0}
-              img={p?.imgBase ?? "/assets/placeholder"}
-              rating={p?.rating ?? 0}
-              colors={p?.colors ?? []}
-              badge="Хит"
-            />
+  key={p.id}
+  id={p.id}
+  slug={p.slug}         // ← важно
+  name={p.name}
+  subtitle={p.subtitle || ""}
+  price={p.price}
+  img={p.imgBase}
+  rating={p.rating ?? 0}
+  colors={p.colors ?? []}
+  badge={p.isNew ? "Новинка" : undefined}
+/>
+
           ))}
         </div>
       </section>

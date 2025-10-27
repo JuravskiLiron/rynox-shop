@@ -1,0 +1,70 @@
+/* ===== iOS-like header ===== */
+.hd.ios{
+  background:transparent;
+  border-bottom: none;
+  position: sticky; top:0; z-index:40;
+}
+.hd.ios.is-scrolled { backdrop-filter: blur(4px); }
+
+.hd__row{ display:flex; align-items:center; gap:16px; padding:10px 0; }
+.brand{ display:inline-flex; align-items:center; gap:6px; text-decoration:none; color:var(--ink); }
+.brand strong{ font-weight:800; letter-spacing:.2px; }
+.brand span{ color: var(--brand); }
+
+/* Поиск-пилюля */
+.hd__search--pill{
+  margin-left:auto; display:flex; gap:8px;
+  background:rgba(248,250,252,.8);
+  border:1px solid var(--line); border-radius:999px;
+  padding:4px; backdrop-filter: blur(8px);
+}
+.hd__search--pill input{
+  width:340px; padding:.55rem .7rem; border:0; background:transparent; outline:none;
+}
+.hd__search--pill button{
+  padding:.45rem .8rem; border:1px solid var(--line);
+  border-radius:999px; background:#fff;
+}
+
+/* Корзина */
+.hd__cart{ position:relative; text-decoration:none; font-size:20px; }
+.hd__badge{
+  position:absolute; right:-8px; top:-8px; background:#ef4444; color:#fff;
+  font-size:11px; line-height:1; padding:2px 5px; border-radius:999px;
+}
+
+/* Плавающая капсула-навигация по центру */
+.iosbar{
+  position: fixed; left:50%; transform: translateX(-50%);
+  top:10px; z-index:50;
+  display:flex; gap:6px; padding:6px;
+  background: rgba(255,255,255,.7);
+  backdrop-filter: blur(10px);
+  border:1px solid var(--line);
+  border-radius:999px;
+  box-shadow: 0 8px 24px rgba(2,6,23,.10);
+}
+.iosbar__link{
+  text-decoration:none; color:#334155;
+  padding:.45rem .8rem; border-radius:999px;
+  transition: background .15s, color .15s;
+}
+.iosbar__link:hover{ background:#f1f5f9; }
+.iosbar__link.is-active{ background:var(--brand); color:#fff; }
+
+/* Моб. адаптация */
+.hd__burger{ display:none; border:0; background:#fff; font-size:22px; }
+@media (max-width: 960px){
+  .hd__search--pill input{ width:180px; }
+  .hd__burger{ display:block; margin-left:auto; }
+  .iosbar{
+    top:8px; max-width: 92vw; overflow:auto; scrollbar-width:none;
+  }
+  .iosbar::-webkit-scrollbar{ display:none; }
+}
+
+/* таймер — уже есть базовые, но на всякий */
+.promo{ background:#0ea5e9; color:#fff; border-bottom:1px solid #0891b2; }
+.promo__inner{ display:flex; gap:16px; align-items:center; justify-content:space-between; padding:8px 0; }
+.clock{ font-variant-numeric: tabular-nums; font-feature-settings:'tnum' 1; white-space:nowrap; }
+.clock__num{ display:inline-block; width:2ch; text-align:right; }

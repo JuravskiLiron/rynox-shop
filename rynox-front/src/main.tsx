@@ -6,6 +6,8 @@ import App from "./App";
 
 // единый CSS-бандл
 import "./styles/base.css";   // <-- сюда помести мой цельный CSS
+import "./styles/app.css";   // <-- сюда помести мой цельный CSS
+   // <-- сюда помести мой цельный CSS
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>

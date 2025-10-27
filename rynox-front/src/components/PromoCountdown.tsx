@@ -1,43 +1,40 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-function pad(n:number){ return String(n).padStart(2,"0"); }
+function pad(n: number) { return String(n).padStart(2, "0"); }
 
-export default function PromoCountdown({ until, label }:{until:string; label:string}) {
-  const dRef = useRef<HTMLSpanElement>(null);
-  const hRef = useRef<HTMLSpanElement>(null);
-  const mRef = useRef<HTMLSpanElement>(null);
-  const sRef = useRef<HTMLSpanElement>(null);
+export default function PromoCountdown({
+  until,
+  label = "Весенняя распродажа",
+  ctaHref = "/catalog",
+  ctaText = "Купить со скидкой",
+}: { until: string; label?: string; ctaHref?: string; ctaText?: string }) {
 
-  useEffect(()=>{
-    const target = new Date(until).getTime();
-    const tick = () => {
-      const sec = Math.max(0, Math.floor((target - Date.now())/1000));
-      const d = Math.floor(sec / 86400);
-      const h = Math.floor((sec % 86400) / 3600);
-      const m = Math.floor((sec % 3600) / 60);
-      const s = sec % 60;
-      if (dRef.current) dRef.current.textContent = d>0 ? `${d}д` : "";
-      if (hRef.current) hRef.current.textContent = pad(h);
-      if (mRef.current) mRef.current.textContent = pad(m);
-      if (sRef.current) sRef.current.textContent = pad(s);
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return ()=>clearInterval(id);
-  },[until]);
+  const target = useMemo(() => new Date(until).getTime(), [until]);
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const diff = Math.max(target - now, 0);
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
 
   return (
-    <div className="promo">
+    <section className="promo">
       <div className="container promo__inner">
-        <span className="clock">
-  <b className="clock__d" />       {/* дни (может быть пусто) */}
-  <b className="clock__num" />:    {/* часы */}
-  <b className="clock__num" />:    {/* минуты */}
-  <b className="clock__num" />     {/* секунды */}
-</span>
-
-        <a className="btn btn--light" href="/sale">Купить со скидкой</a>
+        <strong>{label}</strong>
+        <div className="clock" aria-live="polite" aria-label="До конца акции">
+          <span><b className="clock__num">{pad(d)}</b>д</span>{" "}
+          <span><b className="clock__num">{pad(h)}</b>ч</span>{" "}
+          <span><b className="clock__num">{pad(m)}</b>м</span>{" "}
+          <span><b className="clock__num">{pad(s)}</b>с</span>
+        </div>
+        <a className="btn btn--light" href={ctaHref}>{ctaText}</a>
       </div>
-    </div>
+    </section>
   );
 }
